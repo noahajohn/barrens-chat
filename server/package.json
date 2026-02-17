@@ -1,0 +1,51 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@fastify/autoload": "^6.3.1",
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/cors": "^11.2.0",
+    "@fastify/error": "^4.2.0",
+    "@fastify/jwt": "^10.0.0",
+    "@fastify/static": "^9.0.0",
+    "@fastify/type-provider-typebox": "^6.1.0",
+    "@prisma/adapter-pg": "^7.4.0",
+    "@prisma/client": "^7.4.0",
+    "@sinclair/typebox": "^0.34.48",
+    "cookie": "^1.1.1",
+    "dotenv": "^16.6.1",
+    "fastify": "^5.7.4",
+    "fastify-plugin": "^5.1.0",
+    "pg": "^8.18.0",
+    "prisma": "^7.4.0",
+    "sanitize-html": "^2.17.0",
+    "shared": "*",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/cookie": "^1.0.0",
+    "@types/node": "^25.2.3",
+    "@types/pg": "^8.16.0",
+    "@types/sanitize-html": "^2.16.0",
+    "eslint": "^10.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.0",
+    "vitest": "^4.0.18"
+  }
+}
