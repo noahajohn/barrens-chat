@@ -20,7 +20,7 @@ export function ChatPage() {
   const [targetUser, setTargetUser] = useState<UserPayload | null>(null)
 
   const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  const bgImage = isDark ? '/barrens-bg-night.jpg' : '/barrens-bg-day.jpg'
+  const bgImage = isDark ? '/barrens-bg-night.jpeg' : '/barrens-bg-day.jpg'
 
   const handleTargetUser = useCallback((clickedUser: UserPayload) => {
     setTargetUser((prev) => (prev?.id === clickedUser.id ? null : clickedUser))
