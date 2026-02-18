@@ -1,9 +1,19 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@font-face {
+  font-family: 'LifeCraft';
+  src: url('/fonts/LifeCraft_Font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-wow-header: 'LifeCraft', serif;
+  --font-wow-chat: 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -49,6 +59,7 @@
   --color-wow-yell: var(--wow-yell);
   --color-wow-emote: var(--wow-emote);
   --color-wow-npc: var(--wow-npc);
+  --color-wow-zone: var(--wow-zone);
 }
 
 /* Day theme — sun-scorched Barrens savanna */
@@ -80,8 +91,9 @@
   --wow-channel: oklch(0.7 0.12 85);
   --wow-system: oklch(0.75 0.18 95);
   --wow-yell: oklch(0.7 0.2 30);
-  --wow-emote: oklch(0.7 0.12 55);
+  --wow-emote: oklch(0.72 0.19 52);
   --wow-npc: oklch(0.65 0.15 145);
+  --wow-zone: oklch(0.84 0.08 350);
 
   /* Chart colors */
   --chart-1: oklch(0.65 0.15 50);
@@ -129,8 +141,9 @@
   --wow-channel: oklch(0.68 0.1 85);
   --wow-system: oklch(0.72 0.16 95);
   --wow-yell: oklch(0.65 0.18 30);
-  --wow-emote: oklch(0.65 0.1 55);
+  --wow-emote: oklch(0.68 0.17 52);
   --wow-npc: oklch(0.6 0.12 145);
+  --wow-zone: oklch(0.82 0.07 350);
 
   /* Chart colors */
   --chart-1: oklch(0.7 0.15 220);
@@ -150,6 +163,10 @@
   --sidebar-ring: oklch(0.72 0.14 85);
 }
 
+@utility text-shadow-wow {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9), 0 0 4px rgba(0, 0, 0, 0.4);
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -157,6 +174,6 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Arial, Helvetica, 'Segoe UI', sans-serif;
   }
 }

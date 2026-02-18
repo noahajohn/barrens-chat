@@ -16,9 +16,7 @@ export function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background">
       <div className="mb-8 text-center">
-        <h1 className="mb-2 text-5xl font-bold tracking-tight text-wow-gold-bright"
-          style={{ fontFamily: "'LifeCraft', serif" }}
-        >
+        <h1 className="mb-2 text-5xl font-bold tracking-tight font-wow-header text-wow-gold-bright">
           Barrens Chat
         </h1>
         <p className="text-lg text-muted-foreground">

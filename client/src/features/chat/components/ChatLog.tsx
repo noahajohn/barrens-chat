@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import type { MessagePayload } from 'shared'
+import { Button } from '@/shared/components/ui/button'
 import { MessageLine } from './MessageLine'
 
 interface ChatLogProps {
@@ -16,13 +17,13 @@ export function ChatLog({ messages, loading, loadingMore, hasMore, onLoadMore }:
   const shouldAutoScroll = useRef(true)
 
   // Track if user is near bottom
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     const container = containerRef.current
     if (!container) return
     const threshold = 100
     shouldAutoScroll.current =
       container.scrollHeight - container.scrollTop - container.clientHeight < threshold
-  }
+  }, [])
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
@@ -43,17 +44,18 @@ export function ChatLog({ messages, loading, loadingMore, hasMore, onLoadMore }:
     <div
       ref={containerRef}
       onScroll={handleScroll}
-      className="flex-1 overflow-y-auto px-4 py-2"
+      className="flex flex-1 flex-col justify-end overflow-y-auto px-4 py-2"
     >
       {hasMore && (
         <div className="mb-2 text-center">
-          <button
+          <Button
+            variant="outline"
+            size="xs"
             onClick={onLoadMore}
             disabled={loadingMore}
-            className="rounded-md border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:bg-accent"
           >
             {loadingMore ? 'Loading...' : 'Load more messages'}
-          </button>
+          </Button>
         </div>
       )}
       {messages.map((msg) => (

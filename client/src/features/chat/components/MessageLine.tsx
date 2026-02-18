@@ -13,7 +13,7 @@ export function MessageLine({ message }: MessageLineProps) {
 
   if (message.messageType === MessageType.SYSTEM) {
     return (
-      <div className="py-0.5 font-mono text-sm text-wow-system">
+      <div className="py-0.5 font-wow-chat text-[17px] leading-snug text-shadow-wow text-wow-system">
         {message.content}
       </div>
     )
@@ -21,8 +21,8 @@ export function MessageLine({ message }: MessageLineProps) {
 
   if (message.messageType === MessageType.EMOTE) {
     return (
-      <div className="py-0.5 font-mono text-sm text-wow-emote">
-        <span className="text-muted-foreground">{time} </span>
+      <div className="py-0.5 font-wow-chat text-[17px] leading-snug text-shadow-wow text-wow-emote">
+        <span className="text-white/50">{time} </span>
         {message.username} {message.content}
       </div>
     )
@@ -32,8 +32,8 @@ export function MessageLine({ message }: MessageLineProps) {
   const displayName = message.isNpc ? (message.npcName ?? message.username) : message.username
 
   return (
-    <div className="flex items-start gap-1.5 py-0.5 font-mono text-sm">
-      <span className="text-muted-foreground shrink-0">{time}</span>
+    <div className="flex items-start gap-1.5 py-0.5 font-wow-chat text-[17px] leading-snug text-shadow-wow">
+      <span className="text-white/50 shrink-0">{time}</span>
       {message.avatarUrl && (
         <img
           src={message.avatarUrl}
@@ -46,7 +46,7 @@ export function MessageLine({ message }: MessageLineProps) {
         <span className={message.isNpc ? 'text-wow-npc' : 'text-wow-gold'}>
           [{displayName}]
         </span>
-        <span className={isYell ? 'text-wow-yell' : 'text-foreground'}>
+        <span className={isYell ? 'text-wow-yell' : 'text-wow-zone'}>
           : {isYell ? message.content.toUpperCase() : message.content}
         </span>
       </span>
