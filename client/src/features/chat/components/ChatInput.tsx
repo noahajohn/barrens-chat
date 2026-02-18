@@ -1,6 +1,9 @@
 import { useState, type FormEvent, type KeyboardEvent } from 'react'
 import { MessageType } from 'shared'
 import type { UserPayload } from 'shared'
+import { cn } from '@/lib/utils'
+import { Button } from '@/shared/components/ui/button'
+import { Input } from '@/shared/components/ui/input'
 
 interface ChatInputProps {
   onSend: (content: string, messageType: MessageType) => void
@@ -49,17 +52,19 @@ export function ChatInput({ onSend, disabled, targetUser, onClearTarget }: ChatI
       {targetUser && (
         <div className="flex items-center gap-2 px-3 pt-2 text-xs text-wow-gold">
           <span>Targeting: <strong>{targetUser.username}</strong></span>
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="xs"
             onClick={onClearTarget}
-            className="rounded px-1 text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+            className="text-muted-foreground hover:text-foreground"
           >
             [x]
-          </button>
+          </Button>
         </div>
       )}
       <form onSubmit={handleSubmit} className="flex items-center gap-2 p-3">
-        <input
+        <Input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value.slice(0, MAX_LENGTH))}
@@ -67,18 +72,14 @@ export function ChatInput({ onSend, disabled, targetUser, onClearTarget }: ChatI
           placeholder="Type a message..."
           disabled={disabled}
           maxLength={MAX_LENGTH}
-          className="flex-1 rounded-md border border-input bg-background/70 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          className="flex-1 bg-background/70"
         />
-        <span className={`text-xs tabular-nums ${remaining < 50 ? 'text-destructive' : 'text-muted-foreground'}`}>
+        <span className={cn('text-xs tabular-nums', remaining < 50 ? 'text-destructive' : 'text-muted-foreground')}>
           {remaining}
         </span>
-        <button
-          type="submit"
-          disabled={disabled || !message.trim()}
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
-        >
+        <Button type="submit" disabled={disabled || !message.trim()}>
           Send
-        </button>
+        </Button>
       </form>
     </div>
   )

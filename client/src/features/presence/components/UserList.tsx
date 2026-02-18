@@ -1,4 +1,5 @@
 import type { UserPayload } from 'shared'
+import { cn } from '@/lib/utils'
 
 interface UserListProps {
   users: UserPayload[]
@@ -23,9 +24,10 @@ export function UserList({ users, count, targetUser, onTargetUser }: UserListPro
               key={user.id}
               type="button"
               onClick={() => onTargetUser(user)}
-              className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left transition-colors cursor-pointer hover:bg-wow-gold/10 ${
-                isTarget ? 'bg-wow-gold/15 ring-1 ring-wow-gold/40' : ''
-              }`}
+              className={cn(
+                'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left transition-colors cursor-pointer hover:bg-wow-gold/10',
+                isTarget && 'bg-wow-gold/15 ring-1 ring-wow-gold/40',
+              )}
             >
               {user.avatarUrl ? (
                 <img src={user.avatarUrl} alt={user.username} className="h-5 w-5 rounded-full" />

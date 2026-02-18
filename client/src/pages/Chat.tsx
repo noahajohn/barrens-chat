@@ -3,18 +3,24 @@ import { useAuth } from '@/features/auth/context/AuthContext'
 import { useMessages } from '@/features/chat/hooks/useMessages'
 import { useSocket } from '@/features/chat/hooks/useSocket'
 import { usePresence } from '@/features/presence/hooks/usePresence'
+import { useTheme } from '@/features/theme/components/ThemeProvider'
 import { ChatLog } from '@/features/chat/components/ChatLog'
 import { ChatInput } from '@/features/chat/components/ChatInput'
 import { ConnectionStatus } from '@/features/chat/components/ConnectionStatus'
 import { UserList } from '@/features/presence/components/UserList'
 import { ThemeToggle } from '@/features/theme/components/ThemeToggle'
+import { Button } from '@/shared/components/ui/button'
 import type { MessagePayload, UserPayload } from 'shared'
 
 export function ChatPage() {
   const { user, logout } = useAuth()
+  const { theme } = useTheme()
   const { messages, loading, loadingMore, hasMore, loadMore, addMessage } = useMessages()
   const { users, count, handleUsersList, handleUserJoined, handleUserLeft } = usePresence()
   const [targetUser, setTargetUser] = useState<UserPayload | null>(null)
+
+  const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  const bgImage = isDark ? '/barrens-bg-night.jpg' : '/barrens-bg-day.jpg'
 
   const handleTargetUser = useCallback((clickedUser: UserPayload) => {
     setTargetUser((prev) => (prev?.id === clickedUser.id ? null : clickedUser))
@@ -44,7 +50,7 @@ export function ChatPage() {
   return (
     <div
       className="flex h-screen flex-col bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/barrens-bg-day.jpg')" }}
+      style={{ backgroundImage: `url('${bgImage}')` }}
     >
       {/* Header */}
       <header className="flex items-center justify-between border-b border-border bg-card/80 px-4 py-2 backdrop-blur-sm">
@@ -57,12 +63,9 @@ export function ChatPage() {
         <div className="flex items-center gap-3">
           <span className="text-sm text-muted-foreground">{user?.username}</span>
           <ThemeToggle />
-          <button
-            onClick={logout}
-            className="rounded-md border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:bg-accent"
-          >
+          <Button variant="outline" size="xs" onClick={logout}>
             Logout
-          </button>
+          </Button>
         </div>
       </header>
 
