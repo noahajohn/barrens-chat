@@ -257,8 +257,41 @@ export function parseSlashCommand(
 ): SlashCommandResult {
   const trimmed = input.trim()
 
-  if (trimmed.startsWith('/yell ')) {
-    return { content: trimmed.slice(6), messageType: MessageType.YELL }
+  // /yell, /y, /sh, /shout — WoW-style yelling
+  const yellMatch = trimmed.match(/^\/(yell|y|sh|shout)\s+(.+)/i)
+  if (yellMatch) {
+    return { content: yellMatch[2], messageType: MessageType.YELL }
+  }
+
+  // /roll and /random — WoW-style dice rolling
+  const rollMatch = trimmed.match(/^\/(roll|random)(?:\s+(.+))?$/i)
+  if (rollMatch) {
+    let min = 1
+    let max = 100
+
+    const arg = rollMatch[2]?.trim()
+    if (arg) {
+      const rangeMatch = arg.match(/^(\d+)-(\d+)$/)
+      if (rangeMatch) {
+        const parsedMin = parseInt(rangeMatch[1], 10)
+        const parsedMax = parseInt(rangeMatch[2], 10)
+        if (parsedMin > 0 && parsedMax > 0 && parsedMin < parsedMax) {
+          min = parsedMin
+          max = parsedMax
+        }
+      } else {
+        const parsedMax = parseInt(arg, 10)
+        if (!isNaN(parsedMax) && parsedMax > 0) {
+          max = parsedMax
+        }
+      }
+    }
+
+    const result = Math.floor(Math.random() * (max - min + 1)) + min
+    return {
+      content: `rolls ${result} (${min}-${max}).`,
+      messageType: MessageType.ROLL,
+    }
   }
 
   const match = trimmed.match(/^\/(\S+)/)

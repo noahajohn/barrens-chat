@@ -22,6 +22,7 @@ enum MessageType {
   EMOTE
   YELL
   SYSTEM
+  ROLL
 }
 
 model Message {

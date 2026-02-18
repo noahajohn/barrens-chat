@@ -3,6 +3,7 @@ export enum MessageType {
   EMOTE = 'EMOTE',
   YELL = 'YELL',
   SYSTEM = 'SYSTEM',
+  ROLL = 'ROLL',
 }
 
 export interface MessagePayload {

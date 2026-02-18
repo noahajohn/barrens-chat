@@ -90,7 +90,7 @@
   --wow-gold-bright: oklch(0.85 0.18 90);
   --wow-channel: oklch(0.7 0.12 85);
   --wow-system: oklch(0.75 0.18 95);
-  --wow-yell: oklch(0.7 0.2 30);
+  --wow-yell: oklch(0.63 0.24 25);
   --wow-emote: oklch(0.72 0.19 52);
   --wow-npc: oklch(0.65 0.15 145);
   --wow-zone: oklch(0.84 0.08 350);
@@ -140,7 +140,7 @@
   --wow-gold-bright: oklch(0.8 0.16 88);
   --wow-channel: oklch(0.68 0.1 85);
   --wow-system: oklch(0.72 0.16 95);
-  --wow-yell: oklch(0.65 0.18 30);
+  --wow-yell: oklch(0.58 0.22 25);
   --wow-emote: oklch(0.68 0.17 52);
   --wow-npc: oklch(0.6 0.12 145);
   --wow-zone: oklch(0.82 0.07 350);
