@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useAuth } from '@/features/auth/context/AuthContext'
 import { useMessages } from '@/features/chat/hooks/useMessages'
 import { useSocket } from '@/features/chat/hooks/useSocket'
@@ -8,12 +8,26 @@ import { ChatInput } from '@/features/chat/components/ChatInput'
 import { ConnectionStatus } from '@/features/chat/components/ConnectionStatus'
 import { UserList } from '@/features/presence/components/UserList'
 import { ThemeToggle } from '@/features/theme/components/ThemeToggle'
-import type { MessagePayload } from 'shared'
+import type { MessagePayload, UserPayload } from 'shared'
 
 export function ChatPage() {
   const { user, logout } = useAuth()
   const { messages, loading, loadingMore, hasMore, loadMore, addMessage } = useMessages()
   const { users, count, handleUsersList, handleUserJoined, handleUserLeft } = usePresence()
+  const [targetUser, setTargetUser] = useState<UserPayload | null>(null)
+
+  const handleTargetUser = useCallback((clickedUser: UserPayload) => {
+    setTargetUser((prev) => (prev?.id === clickedUser.id ? null : clickedUser))
+  }, [])
+
+  const handleClearTarget = useCallback(() => {
+    setTargetUser(null)
+  }, [])
+
+  const onUserLeft = useCallback((leftUser: UserPayload) => {
+    handleUserLeft(leftUser)
+    setTargetUser((prev) => (prev?.id === leftUser.id ? null : prev))
+  }, [handleUserLeft])
 
   const onMessage = useCallback((message: MessagePayload) => {
     addMessage(message)
@@ -23,7 +37,7 @@ export function ChatPage() {
     enabled: !!user,
     onMessage,
     onUserJoined: handleUserJoined,
-    onUserLeft: handleUserLeft,
+    onUserLeft: onUserLeft,
     onUsersList: handleUsersList,
   })
 
@@ -65,11 +79,11 @@ export function ChatPage() {
             hasMore={hasMore}
             onLoadMore={loadMore}
           />
-          <ChatInput onSend={sendMessage} disabled={!connected} />
+          <ChatInput onSend={sendMessage} disabled={!connected} targetUser={targetUser} onClearTarget={handleClearTarget} />
         </div>
 
         {/* User list sidebar */}
-        <UserList users={users} count={count} />
+        <UserList users={users} count={count} targetUser={targetUser} onTargetUser={handleTargetUser} />
       </div>
     </div>
   )
