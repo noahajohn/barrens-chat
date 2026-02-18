@@ -7,9 +7,9 @@ interface UserListProps {
 
 export function UserList({ users, count }: UserListProps) {
   return (
-    <div className="flex w-52 flex-col border-l border-border bg-card">
+    <div className="flex w-52 flex-col border-l border-border bg-card/70 backdrop-blur-sm">
       <div className="border-b border-border px-3 py-2">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-shadow-wow text-muted-foreground">
           Online — {count}
         </h3>
       </div>
@@ -23,7 +23,7 @@ export function UserList({ users, count }: UserListProps) {
                 {user.username[0].toUpperCase()}
               </div>
             )}
-            <span className="truncate text-sm text-wow-gold">{user.username}</span>
+            <span className="truncate text-sm text-shadow-wow text-wow-gold">{user.username}</span>
           </div>
         ))}
       </div>

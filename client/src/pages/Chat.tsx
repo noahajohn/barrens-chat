@@ -28,14 +28,14 @@ export function ChatPage() {
   })
 
   return (
-    <div className="flex h-screen flex-col bg-background">
+    <div
+      className="flex h-screen flex-col bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: "url('/barrens-bg-day.jpg')" }}
+    >
       {/* Header */}
-      <header className="flex items-center justify-between border-b border-border bg-card px-4 py-2">
+      <header className="flex items-center justify-between border-b border-border bg-card/80 px-4 py-2 backdrop-blur-sm">
         <div className="flex items-center gap-3">
-          <h1
-            className="text-xl font-bold text-wow-gold-bright"
-            style={{ fontFamily: "'LifeCraft', serif" }}
-          >
+          <h1 className="text-xl font-bold font-wow-header text-wow-gold-bright">
             Barrens Chat
           </h1>
           <span className="text-sm text-wow-channel">[General]</span>
@@ -57,7 +57,7 @@ export function ChatPage() {
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Chat area */}
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col bg-black/40">
           <ChatLog
             messages={messages}
             loading={loading}

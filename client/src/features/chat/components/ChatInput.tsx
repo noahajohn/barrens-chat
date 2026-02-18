@@ -38,7 +38,7 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
   const remaining = MAX_LENGTH - message.length
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-2 border-t border-border bg-card p-3">
+    <form onSubmit={handleSubmit} className="flex items-center gap-2 border-t border-border bg-card/80 p-3 backdrop-blur-sm">
       <input
         type="text"
         value={message}
@@ -47,7 +47,7 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
         placeholder="Type a message..."
         disabled={disabled}
         maxLength={MAX_LENGTH}
-        className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+        className="flex-1 rounded-md border border-input bg-background/70 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
       />
       <span className={`text-xs tabular-nums ${remaining < 50 ? 'text-destructive' : 'text-muted-foreground'}`}>
         {remaining}

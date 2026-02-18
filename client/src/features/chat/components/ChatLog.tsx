@@ -43,7 +43,7 @@ export function ChatLog({ messages, loading, loadingMore, hasMore, onLoadMore }:
     <div
       ref={containerRef}
       onScroll={handleScroll}
-      className="flex-1 overflow-y-auto px-4 py-2"
+      className="flex flex-1 flex-col justify-end overflow-y-auto px-4 py-2"
     >
       {hasMore && (
         <div className="mb-2 text-center">
