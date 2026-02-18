@@ -35,6 +35,10 @@ export function LoginPage() {
       <p className="mt-6 text-xs text-muted-foreground">
         A tribute to the greatest chat channel in gaming history.
       </p>
+
+      <footer className="absolute bottom-6 text-xs text-muted-foreground">
+        Made with &hearts; and collaboration with Claude Code.
+      </footer>
     </div>
   )
 }
