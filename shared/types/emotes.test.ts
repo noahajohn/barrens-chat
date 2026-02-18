@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseSlashCommand } from './emotes.js'
+import { parseSlashCommand, getEmote, EMOTES } from './emotes.js'
 import { MessageType } from './message.js'
 
 describe('parseSlashCommand', () => {
@@ -33,7 +33,7 @@ describe('parseSlashCommand', () => {
 
   it('parses /dance without target', () => {
     expect(parseSlashCommand('/dance')).toEqual({
-      content: 'dances.',
+      content: 'bursts into dance.',
       messageType: MessageType.EMOTE,
     })
   })
@@ -47,21 +47,21 @@ describe('parseSlashCommand', () => {
 
   it('parses /flex without target', () => {
     expect(parseSlashCommand('/flex')).toEqual({
-      content: 'flexes.',
+      content: 'flexes their muscles. Oooooh so strong!',
       messageType: MessageType.EMOTE,
     })
   })
 
   it('parses /flex with target', () => {
     expect(parseSlashCommand('/flex', 'Mankrik')).toEqual({
-      content: 'flexes at Mankrik.',
+      content: 'flexes at Mankrik. Oooooh so strong!',
       messageType: MessageType.EMOTE,
     })
   })
 
   it('matches emote with trailing space/text', () => {
     expect(parseSlashCommand('/dance something')).toEqual({
-      content: 'dances.',
+      content: 'bursts into dance.',
       messageType: MessageType.EMOTE,
     })
   })
@@ -78,5 +78,71 @@ describe('parseSlashCommand', () => {
       content: '',
       messageType: MessageType.TEXT,
     })
+  })
+
+  it('resolves alias /lol to /laugh', () => {
+    expect(parseSlashCommand('/lol')).toEqual({
+      content: 'laughs.',
+      messageType: MessageType.EMOTE,
+    })
+  })
+
+  it('resolves alias /lol with target', () => {
+    expect(parseSlashCommand('/lol', 'Mankrik')).toEqual({
+      content: 'laughs at Mankrik.',
+      messageType: MessageType.EMOTE,
+    })
+  })
+
+  it('resolves alias /sorry to /apologize', () => {
+    expect(parseSlashCommand('/sorry')).toEqual({
+      content: 'apologizes to everyone. Sorry!',
+      messageType: MessageType.EMOTE,
+    })
+  })
+
+  it('resolves multi-alias /goodbye to /bye', () => {
+    expect(parseSlashCommand('/goodbye', 'Thrall')).toEqual({
+      content: 'waves goodbye to Thrall. Farewell!',
+      messageType: MessageType.EMOTE,
+    })
+  })
+})
+
+describe('getEmote', () => {
+  it('returns emote by canonical command', () => {
+    const emote = getEmote('dance')
+    expect(emote).toBeDefined()
+    expect(emote!.command).toBe('dance')
+  })
+
+  it('returns emote by alias', () => {
+    const emote = getEmote('mad')
+    expect(emote).toBeDefined()
+    expect(emote!.command).toBe('angry')
+  })
+
+  it('returns undefined for unknown command', () => {
+    expect(getEmote('notacommand')).toBeUndefined()
+  })
+})
+
+describe('EMOTES', () => {
+  it('has no duplicate commands or aliases', () => {
+    const seen = new Set<string>()
+    for (const emote of EMOTES) {
+      expect(seen.has(emote.command)).toBe(false)
+      seen.add(emote.command)
+      for (const alias of emote.aliases ?? []) {
+        expect(seen.has(alias)).toBe(false)
+        seen.add(alias)
+      }
+    }
+  })
+
+  it('is sorted alphabetically by command', () => {
+    const commands = EMOTES.map((e) => e.command)
+    const sorted = [...commands].sort()
+    expect(commands).toEqual(sorted)
   })
 })
