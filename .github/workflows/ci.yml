@@ -19,6 +19,8 @@ jobs:
       - run: npm run build -w shared
       - run: npx prisma generate
         working-directory: server
+        env:
+          DATABASE_URL: postgresql://dummy:dummy@localhost:5432/dummy
       - run: npm run lint -w server
       - run: npm run typecheck -w server
       - run: npm test -w server
