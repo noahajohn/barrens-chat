@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type KeyboardEvent } from 'react'
-import { MessageType } from 'shared'
+import { parseSlashCommand } from 'shared'
+import type { MessageType } from 'shared'
 import type { UserPayload } from 'shared'
 import { cn } from '@/lib/utils'
 import { Button } from '@/shared/components/ui/button'
@@ -22,18 +23,8 @@ export function ChatInput({ onSend, disabled, targetUser, onClearTarget }: ChatI
     const trimmed = message.trim()
     if (!trimmed || disabled) return
 
-    const target = targetUser?.username
-
-    // Parse chat commands
-    if (trimmed.startsWith('/yell ')) {
-      onSend(trimmed.slice(6), MessageType.YELL)
-    } else if (trimmed.startsWith('/dance')) {
-      onSend(target ? `dances with ${target}.` : 'dances.', MessageType.EMOTE)
-    } else if (trimmed.startsWith('/flex')) {
-      onSend(target ? `flexes at ${target}.` : 'flexes.', MessageType.EMOTE)
-    } else {
-      onSend(trimmed, MessageType.TEXT)
-    }
+    const { content, messageType } = parseSlashCommand(trimmed, targetUser?.username)
+    onSend(content, messageType)
 
     setMessage('')
   }
