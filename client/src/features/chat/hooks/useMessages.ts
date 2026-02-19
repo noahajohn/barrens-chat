@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import type { MessagePayload } from 'shared'
-import { fetchMessages } from '../services/messages'
+import { fetchMessages } from '@/features/chat/services/messages'
 
 export const useMessages = () => {
   const [messages, setMessages] = useState<MessagePayload[]>([])

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
-import { fetchCurrentUser, logout as logoutApi, type AuthUser } from '../services/auth'
+import { fetchCurrentUser, logout as logoutApi, type AuthUser } from '@/features/auth/services/auth'
 
 interface AuthContextValue {
   user: AuthUser | null

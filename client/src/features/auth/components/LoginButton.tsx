@@ -1,5 +1,5 @@
 import { Button } from '@/shared/components/ui/button'
-import { getLoginUrl } from '../services/auth'
+import { getLoginUrl } from '@/features/auth/services/auth'
 
 const DiscordIcon = () => {
   return (
