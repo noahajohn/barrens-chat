@@ -11,7 +11,7 @@ interface ChatLogProps {
   onLoadMore: () => void
 }
 
-export function ChatLog({ messages, loading, loadingMore, hasMore, onLoadMore }: ChatLogProps) {
+export const ChatLog = ({ messages, loading, loadingMore, hasMore, onLoadMore }: ChatLogProps) => {
   const bottomRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const shouldAutoScroll = useRef(true)

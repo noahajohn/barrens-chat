@@ -20,4 +20,5 @@ export interface InterServerEvents {}
 export interface SocketData {
   userId: string
   username: string
+  avatarUrl: string | null
 }

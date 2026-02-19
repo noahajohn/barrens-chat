@@ -11,15 +11,15 @@ import { addUser, removeUser, getOnlineUsers, getOnlineCount } from '../../servi
 type TypedServer = SocketIOServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
 type TypedSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
 
-export async function registerPresenceHandlers(
+export const registerPresenceHandlers = async (
   io: TypedServer,
   socket: TypedSocket,
   _log: FastifyBaseLogger,
-) {
+) => {
   const user = {
     id: socket.data.userId,
     username: socket.data.username,
-    avatarUrl: null as string | null,
+    avatarUrl: socket.data.avatarUrl,
   }
 
   // Add user and join room

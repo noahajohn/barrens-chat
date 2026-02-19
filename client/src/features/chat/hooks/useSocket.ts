@@ -11,10 +11,11 @@ interface UseSocketOptions {
   onUsersList: (data: { users: UserPayload[]; count: number }) => void
 }
 
-export function useSocket({ enabled, onMessage, onUserJoined, onUserLeft, onUsersList }: UseSocketOptions) {
+export const useSocket = ({ enabled, onMessage, onUserJoined, onUserLeft, onUsersList }: UseSocketOptions) => {
   const socketRef = useRef<TypedSocket | null>(null)
   const [connected, setConnected] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [authFailed, setAuthFailed] = useState(false)
 
   useEffect(() => {
     if (!enabled) return
@@ -34,7 +35,7 @@ export function useSocket({ enabled, onMessage, onUserJoined, onUserLeft, onUser
     socket.on('connect_error', (err) => {
       if (err.message === 'AUTH_FAILED') {
         setError('Authentication failed')
-        window.location.href = '/login'
+        setAuthFailed(true)
       } else {
         setError('Connection error. Reconnecting...')
       }
@@ -63,5 +64,5 @@ export function useSocket({ enabled, onMessage, onUserJoined, onUserLeft, onUser
     socketRef.current?.emit('message:send', { content, messageType })
   }, [])
 
-  return { connected, error, sendMessage }
+  return { connected, error, authFailed, sendMessage }
 }

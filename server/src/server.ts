@@ -3,7 +3,7 @@ import { buildApp } from './app.js'
 import { setupSocketHandlers } from './socket/index.js'
 import { loadEnv } from './config/env.js'
 
-async function start() {
+const start = async () => {
   try {
     const env = loadEnv()
     const fastify = await buildApp(env)

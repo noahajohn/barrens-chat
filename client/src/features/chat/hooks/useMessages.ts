@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import type { MessagePayload } from 'shared'
 import { fetchMessages } from '../services/messages'
 
-export function useMessages() {
+export const useMessages = () => {
   const [messages, setMessages] = useState<MessagePayload[]>([])
   const [nextCursor, setNextCursor] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)

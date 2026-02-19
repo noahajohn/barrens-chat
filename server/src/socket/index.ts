@@ -3,7 +3,7 @@ import type { FastifyInstance } from 'fastify'
 import { registerMessageHandlers } from './handlers/message.handler.js'
 import { registerPresenceHandlers } from './handlers/presence.handler.js'
 
-export function setupSocketHandlers(fastify: FastifyInstance) {
+export const setupSocketHandlers = (fastify: FastifyInstance) => {
   const io = fastify.io
   const prisma = fastify.prisma
 
@@ -28,6 +28,7 @@ export function setupSocketHandlers(fastify: FastifyInstance) {
       }>(token)
       socket.data.userId = decoded.id
       socket.data.username = decoded.username
+      socket.data.avatarUrl = decoded.avatarUrl
       next()
     } catch {
       next(new Error('AUTH_FAILED'))

@@ -6,14 +6,14 @@ export interface AuthUser {
   avatarUrl: string | null
 }
 
-export async function fetchCurrentUser(): Promise<AuthUser> {
+export const fetchCurrentUser = async (): Promise<AuthUser> => {
   return apiFetch<AuthUser>('/auth/me')
 }
 
-export async function logout(): Promise<void> {
+export const logout = async (): Promise<void> => {
   await apiFetch('/auth/logout', { method: 'POST' })
 }
 
-export function getLoginUrl(): string {
+export const getLoginUrl = (): string => {
   return `${import.meta.env.VITE_API_URL}/auth/discord`
 }

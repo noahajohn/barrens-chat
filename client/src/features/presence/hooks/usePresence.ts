@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import type { UserPayload } from 'shared'
 
-export function usePresence() {
+export const usePresence = () => {
   const [users, setUsers] = useState<UserPayload[]>([])
   const [count, setCount] = useState(0)
 

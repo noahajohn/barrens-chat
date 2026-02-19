@@ -8,11 +8,11 @@ const sanitizeOptions: sanitizeHtml.IOptions = {
   allowedAttributes: {},
 }
 
-export function sanitizeMessage(content: string): string {
+export const sanitizeMessage = (content: string): string => {
   return sanitizeHtml(content, sanitizeOptions).trim()
 }
 
-export function validateMessage(content: string): string | null {
+export const validateMessage = (content: string): string | null => {
   if (!content || content.trim().length === 0) {
     return 'Message content cannot be empty'
   }
@@ -24,18 +24,18 @@ export function validateMessage(content: string): string | null {
 
 const VALID_MESSAGE_TYPES = new Set(Object.values(MessageType))
 
-export function isValidMessageType(value: string): value is MessageType {
+export const isValidMessageType = (value: string): value is MessageType => {
   return VALID_MESSAGE_TYPES.has(value as MessageType)
 }
 
-export async function createMessage(
+export const createMessage = async (
   prisma: PrismaClient,
   data: {
     content: string
     userId: string
     messageType: MessageType
   },
-): Promise<MessagePayload> {
+): Promise<MessagePayload> => {
   const sanitized = sanitizeMessage(data.content)
   const message = await prisma.message.create({
     data: {
@@ -66,10 +66,10 @@ interface PaginatedMessages {
   nextCursor: string | null
 }
 
-export async function getMessages(
+export const getMessages = async (
   prisma: PrismaClient,
   options: { cursor?: string; limit?: number },
-): Promise<PaginatedMessages> {
+): Promise<PaginatedMessages> => {
   const limit = options.limit ?? 50
   const where = options.cursor
     ? { createdAt: { lt: new Date(options.cursor) } }

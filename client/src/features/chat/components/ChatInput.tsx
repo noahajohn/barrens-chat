@@ -15,7 +15,7 @@ interface ChatInputProps {
 
 const MAX_LENGTH = 500
 
-export function ChatInput({ onSend, disabled, targetUser, onClearTarget }: ChatInputProps) {
+export const ChatInput = ({ onSend, disabled, targetUser, onClearTarget }: ChatInputProps) => {
   const [message, setMessage] = useState('')
 
   const handleSubmit = (e: FormEvent) => {

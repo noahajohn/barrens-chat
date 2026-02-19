@@ -3,7 +3,7 @@ import { ThemeProvider } from '@/features/theme/components/ThemeProvider'
 import { ChatPage } from '@/pages/Chat'
 import { LoginPage } from '@/pages/Login'
 
-function AppContent() {
+const AppContent = () => {
   const { user, loading } = useAuth()
 
   if (loading) {
@@ -24,7 +24,7 @@ function AppContent() {
   return <ChatPage />
 }
 
-export default function App() {
+const App = () => {
   return (
     <ThemeProvider defaultTheme="light">
       <AuthProvider>
@@ -33,3 +33,5 @@ export default function App() {
     </ThemeProvider>
   )
 }
+
+export default App

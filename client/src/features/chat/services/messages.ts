@@ -6,7 +6,7 @@ interface MessagesResponse {
   nextCursor: string | null
 }
 
-export async function fetchMessages(cursor?: string, limit = 50): Promise<MessagesResponse> {
+export const fetchMessages = async (cursor?: string, limit = 50): Promise<MessagesResponse> => {
   const params = new URLSearchParams()
   if (cursor) params.set('cursor', cursor)
   params.set('limit', String(limit))

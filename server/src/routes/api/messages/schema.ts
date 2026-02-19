@@ -1,4 +1,5 @@
 import { Type } from '@sinclair/typebox'
+import { MessageType } from 'shared'
 import { PaginationQuery } from '../../../schemas/common.js'
 
 export const MessagesQuerystring = PaginationQuery
@@ -12,7 +13,13 @@ export const MessageSchema = Type.Object({
   avatarUrl: Type.Union([Type.String(), Type.Null()]),
   isNpc: Type.Boolean(),
   npcName: Type.Union([Type.String(), Type.Null()]),
-  messageType: Type.String(),
+  messageType: Type.Unsafe<MessageType>(Type.Union([
+    Type.Literal('TEXT'),
+    Type.Literal('EMOTE'),
+    Type.Literal('YELL'),
+    Type.Literal('SYSTEM'),
+    Type.Literal('ROLL'),
+  ])),
 })
 
 export const MessagesResponse = Type.Object({

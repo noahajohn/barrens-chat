@@ -9,4 +9,5 @@ export type {
   ErrorCode,
 } from './types/socket-events.js'
 export { EMOTES, getEmote, parseSlashCommand } from './types/emotes.js'
-export type { EmoteDefinition, SlashCommandResult } from './types/emotes.js'
+export type { SlashCommandResult } from './types/emotes.js'
+export type { EmoteDefinition } from './types/emotes-data.js'

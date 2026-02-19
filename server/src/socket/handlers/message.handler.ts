@@ -8,43 +8,35 @@ import type {
 } from 'shared'
 import type { PrismaClient } from '../../generated/prisma/client.js'
 import { validateMessage, createMessage, isValidMessageType } from '../../services/chat.js'
+import { createRateLimiter } from '../../services/rate-limiter.js'
 
 type TypedServer = SocketIOServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
 type TypedSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
 
-// Rate limiting: 5 messages per 10 seconds per socket
 const RATE_LIMIT_WINDOW = 10_000
 const RATE_LIMIT_MAX = 5
 
-export function registerMessageHandlers(
+export const registerMessageHandlers = (
   io: TypedServer,
   socket: TypedSocket,
   prisma: PrismaClient,
   log: FastifyBaseLogger,
-) {
-  const timestamps: number[] = []
+) => {
+  const rateLimiter = createRateLimiter({ windowMs: RATE_LIMIT_WINDOW, maxRequests: RATE_LIMIT_MAX })
 
   socket.on('message:send', async (data) => {
-    // Rate limiting check
-    const now = Date.now()
-    while (timestamps.length > 0 && timestamps[0] < now - RATE_LIMIT_WINDOW) {
-      timestamps.shift()
-    }
-    if (timestamps.length >= RATE_LIMIT_MAX) {
+    if (rateLimiter.isRateLimited()) {
       socket.emit('error', { code: 'RATE_LIMITED', message: 'Too many messages. Slow down!' })
       return
     }
-    timestamps.push(now)
 
     const { content, messageType } = data
 
-    // Validate message type
     if (!isValidMessageType(messageType)) {
       socket.emit('error', { code: 'VALIDATION_ERROR', message: 'Invalid message type' })
       return
     }
 
-    // Validate content
     const error = validateMessage(content)
     if (error) {
       socket.emit('error', { code: 'VALIDATION_ERROR', message: error })

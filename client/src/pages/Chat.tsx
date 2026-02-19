@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '@/features/auth/context/AuthContext'
 import { useMessages } from '@/features/chat/hooks/useMessages'
 import { useSocket } from '@/features/chat/hooks/useSocket'
@@ -12,14 +12,13 @@ import { ThemeToggle } from '@/features/theme/components/ThemeToggle'
 import { Button } from '@/shared/components/ui/button'
 import type { MessagePayload, UserPayload } from 'shared'
 
-export function ChatPage() {
+export const ChatPage = () => {
   const { user, logout } = useAuth()
-  const { theme } = useTheme()
+  const { isDark } = useTheme()
   const { messages, loading, loadingMore, hasMore, loadMore, addMessage } = useMessages()
   const { users, count, handleUsersList, handleUserJoined, handleUserLeft } = usePresence()
   const [targetUser, setTargetUser] = useState<UserPayload | null>(null)
 
-  const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
   const bgImage = isDark ? '/barrens-bg-night.jpeg' : '/barrens-bg-day.jpg'
 
   const handleTargetUser = useCallback((clickedUser: UserPayload) => {
@@ -39,13 +38,19 @@ export function ChatPage() {
     addMessage(message)
   }, [addMessage])
 
-  const { connected, error, sendMessage } = useSocket({
+  const { connected, error, authFailed, sendMessage } = useSocket({
     enabled: !!user,
     onMessage,
     onUserJoined: handleUserJoined,
     onUserLeft: onUserLeft,
     onUsersList: handleUsersList,
   })
+
+  useEffect(() => {
+    if (authFailed) {
+      window.location.href = '/login'
+    }
+  }, [authFailed])
 
   return (
     <div

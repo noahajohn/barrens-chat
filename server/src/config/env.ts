@@ -17,6 +17,6 @@ const EnvSchema = Type.Object({
 
 export type Env = Static<typeof EnvSchema>
 
-export function loadEnv(): Env {
+export const loadEnv = (): Env => {
   return Value.Decode(EnvSchema, process.env)
 }

@@ -7,7 +7,7 @@ import type { Env } from './config/env.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-export async function buildApp(env: Env) {
+export const buildApp = async (env: Env) => {
   const fastify = Fastify({
     logger: true,
   }).withTypeProvider<TypeBoxTypeProvider>()

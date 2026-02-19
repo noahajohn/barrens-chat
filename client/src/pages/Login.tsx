@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { LoginButton } from '@/features/auth/components/LoginButton'
 
-export function LoginPage() {
+export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {

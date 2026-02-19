@@ -18,10 +18,10 @@ interface OAuthConfig {
   redirectUri: string
 }
 
-export async function exchangeDiscordCode(
+export const exchangeDiscordCode = async (
   config: OAuthConfig,
   code: string,
-): Promise<DiscordTokenResponse | null> {
+): Promise<DiscordTokenResponse | null> => {
   const response = await fetch(`${DISCORD_API}/oauth2/token`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -39,7 +39,7 @@ export async function exchangeDiscordCode(
   return (await response.json()) as DiscordTokenResponse
 }
 
-export async function fetchDiscordUser(accessToken: string): Promise<DiscordUser | null> {
+export const fetchDiscordUser = async (accessToken: string): Promise<DiscordUser | null> => {
   const response = await fetch(`${DISCORD_API}/users/@me`, {
     headers: { Authorization: `Bearer ${accessToken}` },
   })
@@ -49,14 +49,14 @@ export async function fetchDiscordUser(accessToken: string): Promise<DiscordUser
   return (await response.json()) as DiscordUser
 }
 
-function buildAvatarUrl(discordId: string, avatar: string | null): string | null {
+const buildAvatarUrl = (discordId: string, avatar: string | null): string | null => {
   return avatar ? `https://cdn.discordapp.com/avatars/${discordId}/${avatar}.png` : null
 }
 
-export async function upsertDiscordUser(
+export const upsertDiscordUser = async (
   prisma: PrismaClient,
   discordUser: DiscordUser,
-) {
+) => {
   const avatarUrl = buildAvatarUrl(discordUser.id, discordUser.avatar)
 
   return prisma.user.upsert({

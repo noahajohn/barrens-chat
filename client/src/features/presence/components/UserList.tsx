@@ -1,5 +1,7 @@
 import type { UserPayload } from 'shared'
 import { cn } from '@/lib/utils'
+import { Button } from '@/shared/components/ui/button'
+import { Avatar, AvatarImage, AvatarFallback } from '@/shared/components/ui/avatar'
 
 interface UserListProps {
   users: UserPayload[]
@@ -8,7 +10,7 @@ interface UserListProps {
   onTargetUser: (user: UserPayload) => void
 }
 
-export function UserList({ users, count, targetUser, onTargetUser }: UserListProps) {
+export const UserList = ({ users, count, targetUser, onTargetUser }: UserListProps) => {
   return (
     <div className="flex w-52 flex-col border-l border-border bg-card/70 backdrop-blur-sm">
       <div className="border-b border-border px-3 py-2">
@@ -20,24 +22,23 @@ export function UserList({ users, count, targetUser, onTargetUser }: UserListPro
         {users.map((user) => {
           const isTarget = targetUser?.id === user.id
           return (
-            <button
+            <Button
               key={user.id}
-              type="button"
+              variant="ghost"
               onClick={() => onTargetUser(user)}
               className={cn(
-                'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left transition-colors cursor-pointer hover:bg-wow-gold/10',
+                'flex w-full items-center justify-start gap-2 px-2 py-1.5 h-auto',
                 isTarget && 'bg-wow-gold/15 ring-1 ring-wow-gold/40',
               )}
             >
-              {user.avatarUrl ? (
-                <img src={user.avatarUrl} alt={user.username} className="h-5 w-5 rounded-full" />
-              ) : (
-                <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
+              <Avatar size="sm" className="h-5 w-5">
+                {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.username} />}
+                <AvatarFallback className="bg-primary text-[10px] text-primary-foreground">
                   {user.username[0].toUpperCase()}
-                </div>
-              )}
+                </AvatarFallback>
+              </Avatar>
               <span className="truncate text-sm text-shadow-wow text-wow-gold">{user.username}</span>
-            </button>
+            </Button>
           )
         })}
       </div>
