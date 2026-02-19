@@ -1,5 +1,6 @@
 import { AuthProvider, useAuth } from '@/features/auth/context/AuthContext'
 import { ThemeProvider } from '@/features/theme/components/ThemeProvider'
+import { ErrorBoundary } from '@/shared/components/ErrorBoundary'
 import { ChatPage } from '@/pages/Chat'
 import { LoginPage } from '@/pages/Login'
 
@@ -26,11 +27,13 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <ThemeProvider defaultTheme="light">
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider defaultTheme="light">
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   )
 }
 
