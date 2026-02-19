@@ -2,6 +2,7 @@ import cookie from 'cookie'
 import type { FastifyInstance } from 'fastify'
 import { registerMessageHandlers } from './handlers/message.handler.js'
 import { registerPresenceHandlers } from './handlers/presence.handler.js'
+import { startNpcTimer, stopNpcTimer } from './handlers/npc.handler.js'
 
 export const setupSocketHandlers = (fastify: FastifyInstance) => {
   const io = fastify.io
@@ -42,4 +43,14 @@ export const setupSocketHandlers = (fastify: FastifyInstance) => {
     await registerPresenceHandlers(io, socket, fastify.log)
     registerMessageHandlers(io, socket, prisma, fastify.log)
   })
+
+  // NPC timer — global, not per-socket
+  if (process.env.ANTHROPIC_API_KEY) {
+    startNpcTimer(io, prisma, fastify.log)
+    fastify.addHook('onClose', async () => {
+      stopNpcTimer()
+    })
+  } else {
+    fastify.log.warn('ANTHROPIC_API_KEY not set — NPC chatters disabled')
+  }
 }

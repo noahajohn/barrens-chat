@@ -8,6 +8,7 @@ const EnvSchema = Type.Object({
   DISCORD_REDIRECT_URI: Type.String(),
   JWT_SECRET: Type.String({ minLength: 32 }),
   FRONTEND_URL: Type.String(),
+  ANTHROPIC_API_KEY: Type.Optional(Type.String()),
   PORT: Type.String({ default: '3000' }),
   NODE_ENV: Type.Union(
     [Type.Literal('development'), Type.Literal('production'), Type.Literal('test')],

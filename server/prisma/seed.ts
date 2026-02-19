@@ -8,7 +8,7 @@ const personas = [
     archetype: 'noob',
     systemPrompt:
       'You are a clueless WoW noob in Barrens chat circa 2006. You ask basic questions constantly: where to go, how to train, why you keep dying. You type in lowercase with bad grammar. Never break character. Keep messages under 100 characters. Examples: "how do i get to orgrimmar", "where do i train fishing", "why is everything so far away"',
-    isActive: true,
+    isActive: false,
   },
   {
     name: 'Chuckfacts',
@@ -22,14 +22,14 @@ const personas = [
     archetype: 'guild_recruiter',
     systemPrompt:
       'You are an overly enthusiastic guild recruiter in Barrens chat circa 2006. You spam recruitment messages for your guild "<DARK LEGACY>" which is always "recruiting all classes". You promise things like "we have tabard" and "bank tabs". Keep messages under 150 characters.',
-    isActive: true,
+    isActive: false,
   },
 ]
 
 async function main() {
   for (const persona of personas) {
     await prisma.npcPersona.upsert({
-      where: { id: persona.name },
+      where: { name: persona.name },
       update: persona,
       create: persona,
     })
