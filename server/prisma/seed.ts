@@ -1,6 +1,11 @@
+import 'dotenv/config'
 import { PrismaClient } from '../src/generated/prisma/client.js'
+import pg from 'pg'
+import { PrismaPg } from '@prisma/adapter-pg'
 
-const prisma = new PrismaClient()
+const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL })
+const adapter = new PrismaPg(pool)
+const prisma = new PrismaClient({ adapter })
 
 const personas = [
   {
@@ -26,7 +31,7 @@ const personas = [
   },
 ]
 
-async function main() {
+const main = async () => {
   for (const persona of personas) {
     await prisma.npcPersona.upsert({
       where: { name: persona.name },
@@ -42,4 +47,7 @@ main()
     console.error(e)
     process.exit(1)
   })
-  .finally(() => prisma.$disconnect())
+  .finally(async () => {
+    await prisma.$disconnect()
+    await pool.end()
+  })

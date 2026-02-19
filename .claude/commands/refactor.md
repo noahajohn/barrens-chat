@@ -37,6 +37,7 @@ This command accepts the following arguments:
 
 - **Never create files > 500 lines** — split into helper files if approaching limit
 - **Use shadcn/ui components** over native HTML elements
+- **Use absolute imports** with path mapping
 - **Avoid `any` type** — use `unknown` or proper types
 - **Always update/create unit tests** for refactored code
 - **Use latest npm packages** when installing new dependencies

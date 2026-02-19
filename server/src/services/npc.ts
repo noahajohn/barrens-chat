@@ -25,6 +25,7 @@ export const getRecentMessages = async (prisma: PrismaClient, count: number) => 
 export const generateNpcMessage = async (
   prisma: PrismaClient,
   persona: { name: string; systemPrompt: string },
+  log?: { error: (obj: unknown, msg: string) => void },
 ): Promise<string | null> => {
   if (!anthropic) return null
 
@@ -57,7 +58,8 @@ export const generateNpcMessage = async (
 
     const textBlock = response.content.find((b) => b.type === 'text')
     return textBlock && 'text' in textBlock ? textBlock.text.trim() : null
-  } catch {
+  } catch (err) {
+    log?.error(err, `Claude API call failed for NPC [${persona.name}]`)
     return null
   }
 }
