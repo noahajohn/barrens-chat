@@ -2,12 +2,18 @@ import Anthropic from '@anthropic-ai/sdk'
 import type { PrismaClient } from '../generated/prisma/client.js'
 import { MessageType as PrismaMessageType } from '../generated/prisma/enums.js'
 import { MessageType, type MessagePayload } from 'shared'
+import { chuckNorrisJokes } from '../data/chuck-norris-jokes.js'
 
 const anthropic = process.env.ANTHROPIC_API_KEY ? new Anthropic() : null
 
 const NPC_MODEL = 'claude-haiku-4-5'
 const NPC_MAX_TOKENS = 150
 const CONTEXT_MESSAGE_COUNT = 10
+export const CHUCK_NORRIS_ARCHETYPE = 'chuck_norris_guy'
+
+export const getRandomJoke = (): string => {
+  return chuckNorrisJokes[Math.floor(Math.random() * chuckNorrisJokes.length)]
+}
 
 export const getActivePersonas = async (prisma: PrismaClient) => {
   return prisma.npcPersona.findMany({ where: { isActive: true } })
@@ -24,9 +30,13 @@ export const getRecentMessages = async (prisma: PrismaClient, count: number) => 
 
 export const generateNpcMessage = async (
   prisma: PrismaClient,
-  persona: { name: string; systemPrompt: string },
+  persona: { name: string; archetype: string; systemPrompt: string },
   log?: { error: (obj: unknown, msg: string) => void },
 ): Promise<string | null> => {
+  if (persona.archetype === CHUCK_NORRIS_ARCHETYPE) {
+    return getRandomJoke()
+  }
+
   if (!anthropic) return null
 
   try {

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { getRandomInterval } from './npc.js'
+import { getRandomInterval, getRandomJoke, CHUCK_NORRIS_ARCHETYPE } from './npc.js'
+import { chuckNorrisJokes } from '../data/chuck-norris-jokes.js'
 
 vi.mock('@anthropic-ai/sdk', () => {
   return {
@@ -28,6 +29,34 @@ describe('getRandomInterval', () => {
   it('returns min when min equals max', () => {
     const result = getRandomInterval(3000, 3000)
     expect(result).toBe(3000)
+  })
+})
+
+describe('getRandomJoke', () => {
+  it('returns a string from the jokes array', () => {
+    const joke = getRandomJoke()
+    expect(chuckNorrisJokes).toContain(joke)
+  })
+
+  it('returns different jokes over many calls', () => {
+    const jokes = new Set(Array.from({ length: 50 }, () => getRandomJoke()))
+    expect(jokes.size).toBeGreaterThan(1)
+  })
+})
+
+describe('generateNpcMessage', () => {
+  it('returns a joke for chuck_norris_guy archetype without calling API', async () => {
+    const { generateNpcMessage } = await import('./npc.js')
+    const mockPrisma = {} as never
+
+    const result = await generateNpcMessage(mockPrisma, {
+      name: 'Chuckfacts',
+      archetype: CHUCK_NORRIS_ARCHETYPE,
+      systemPrompt: 'irrelevant',
+    })
+
+    expect(result).toBeTypeOf('string')
+    expect(chuckNorrisJokes).toContain(result)
   })
 })
 

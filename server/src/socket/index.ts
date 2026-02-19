@@ -45,13 +45,12 @@ export const setupSocketHandlers = (fastify: FastifyInstance): (() => void) => {
   })
 
   // NPC timer — global, not per-socket
-  if (process.env.ANTHROPIC_API_KEY) {
-    startNpcTimer(io, prisma, fastify.log).catch((err) => {
-      fastify.log.error(err, 'Failed to start NPC timer')
-    })
-  } else {
-    fastify.log.warn('ANTHROPIC_API_KEY not set — NPC chatters disabled')
+  if (!process.env.ANTHROPIC_API_KEY) {
+    fastify.log.warn('ANTHROPIC_API_KEY not set — API-based NPCs will be disabled')
   }
+  startNpcTimer(io, prisma, fastify.log).catch((err) => {
+    fastify.log.error(err, 'Failed to start NPC timer')
+  })
 
   return () => {
     stopNpcTimer()
