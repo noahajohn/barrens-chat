@@ -1,7 +1,7 @@
 import sanitizeHtml from 'sanitize-html'
 import type { PrismaClient } from '../generated/prisma/client.js'
 import { MessageType as PrismaMessageType } from '../generated/prisma/enums.js'
-import type { MessagePayload } from 'shared'
+import { MessageType, type MessagePayload } from 'shared'
 
 const sanitizeOptions: sanitizeHtml.IOptions = {
   allowedTags: [],
@@ -22,12 +22,18 @@ export function validateMessage(content: string): string | null {
   return null
 }
 
+const VALID_MESSAGE_TYPES = new Set(Object.values(MessageType))
+
+export function isValidMessageType(value: string): value is MessageType {
+  return VALID_MESSAGE_TYPES.has(value as MessageType)
+}
+
 export async function createMessage(
   prisma: PrismaClient,
   data: {
     content: string
     userId: string
-    messageType: string
+    messageType: MessageType
   },
 ): Promise<MessagePayload> {
   const sanitized = sanitizeMessage(data.content)
@@ -55,10 +61,15 @@ export async function createMessage(
   }
 }
 
+interface PaginatedMessages {
+  messages: MessagePayload[]
+  nextCursor: string | null
+}
+
 export async function getMessages(
   prisma: PrismaClient,
   options: { cursor?: string; limit?: number },
-) {
+): Promise<PaginatedMessages> {
   const limit = options.limit ?? 50
   const where = options.cursor
     ? { createdAt: { lt: new Date(options.cursor) } }

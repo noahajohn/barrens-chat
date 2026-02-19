@@ -4,7 +4,7 @@ import type { FastifyInstance } from 'fastify'
 
 export default fp(async function corsPlugin(fastify: FastifyInstance) {
   await fastify.register(cors, {
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: fastify.env.FRONTEND_URL,
     credentials: true,
     methods: ['GET', 'POST'],
   })

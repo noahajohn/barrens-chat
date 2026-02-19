@@ -47,6 +47,7 @@ barrens-chat/
 ```
 
 **Key Conventions:**
+
 - Features use **colocation**: all related code lives in `features/[feature]/`
 - Server plugins are autoloaded with `@fastify/autoload` — plugins globally, routes dir-prefixed
 - Socket.IO handlers are separate from REST routes in `socket/`
@@ -97,6 +98,15 @@ cd server && npx vitest run    # Run server unit tests (15 tests)
 ### Code Organization
 
 - **Never create a file longer than 500 lines.** Split into helper files if approaching this limit.
+- **Write code your future self can modify**
+- Use absolute imports with path mapping
+- Group related functionality together
+- Separate business logic from presentation logic
+- Keep utility functions pure and testable
+- In JS, always define functions using const and arrow notation.
+  - USE const myFunc = async (num) => {return num + 1;};
+  - NOT async function myFunc(num) { return num + 1;}
+- Always favor async/await whenever possible.
 - Use shadcn/ui components over native HTML elements
 - ESLint flat config (`eslint.config.ts`) with `typescript-eslint`, underscore prefix for unused args
 - When installing npm packages, always use the latest versions

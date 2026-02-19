@@ -8,6 +8,6 @@ export const ErrorResponse = Type.Object({
 })
 
 export const PaginationQuery = Type.Object({
-  cursor: Type.Optional(Type.String({ format: 'date-time' })),
+  cursor: Type.Optional(Type.String()),
   limit: Type.Optional(Type.Number({ minimum: 1, maximum: 100, default: 50 })),
 })

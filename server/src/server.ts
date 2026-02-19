@@ -6,7 +6,7 @@ import { loadEnv } from './config/env.js'
 async function start() {
   try {
     const env = loadEnv()
-    const fastify = await buildApp()
+    const fastify = await buildApp(env)
 
     await fastify.ready()
 

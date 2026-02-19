@@ -1,4 +1,5 @@
 import type { Server as SocketIOServer, Socket } from 'socket.io'
+import type { FastifyBaseLogger } from 'fastify'
 import type {
   ServerToClientEvents,
   ClientToServerEvents,
@@ -10,9 +11,10 @@ import { addUser, removeUser, getOnlineUsers, getOnlineCount } from '../../servi
 type TypedServer = SocketIOServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
 type TypedSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
 
-export function registerPresenceHandlers(
+export async function registerPresenceHandlers(
   io: TypedServer,
   socket: TypedSocket,
+  _log: FastifyBaseLogger,
 ) {
   const user = {
     id: socket.data.userId,
@@ -22,7 +24,7 @@ export function registerPresenceHandlers(
 
   // Add user and join room
   addUser(user)
-  socket.join('general')
+  await socket.join('general')
 
   // Notify all users about the new user
   socket.to('general').emit('user:joined', user)

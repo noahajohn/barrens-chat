@@ -9,7 +9,3 @@ export const MeResponse = Type.Object({
   username: Type.String(),
   avatarUrl: Type.Union([Type.String(), Type.Null()]),
 })
-
-export const ErrorQuerystring = Type.Object({
-  error: Type.Optional(Type.String()),
-})

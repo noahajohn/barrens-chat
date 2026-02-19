@@ -35,10 +35,10 @@ export function setupSocketHandlers(fastify: FastifyInstance) {
   })
 
   // Connection handler
-  io.on('connection', (socket) => {
+  io.on('connection', async (socket) => {
     fastify.log.info(`User connected: ${socket.data.username} (${socket.data.userId})`)
 
-    registerPresenceHandlers(io, socket)
-    registerMessageHandlers(io, socket, prisma)
+    await registerPresenceHandlers(io, socket, fastify.log)
+    registerMessageHandlers(io, socket, prisma, fastify.log)
   })
 }

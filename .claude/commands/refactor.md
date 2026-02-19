@@ -100,7 +100,9 @@ This command accepts the following arguments:
    - Break down into specific, actionable tasks
    - Order tasks by dependency and priority
    - Note any breaking changes or risks
-   - Always present tasks to user for approval before proceeding to execution phase
+
+5. **Present tasks to user for approval**
+   - Always ask for approval before proceeding to execution phase
 
 ### Phase 2: Execution
 
@@ -120,8 +122,8 @@ This command accepts the following arguments:
 2. **Route Pattern**
 
    ```typescript
-   import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
-   import { ResponseSchema, QuerySchema } from './schema.js'
+   import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
+   import { ResponseSchema, QuerySchema } from './schema.js';
 
    const routes: FastifyPluginAsyncTypebox = async (fastify) => {
      fastify.get(
@@ -134,12 +136,12 @@ This command accepts the following arguments:
          },
        },
        async (request) => {
-         return someService(fastify.prisma, request.query)
+         return someService(fastify.prisma, request.query);
        },
-     )
-   }
+     );
+   };
 
-   export default routes
+   export default routes;
    ```
 
 3. **Service Pattern**
@@ -168,7 +170,7 @@ This command accepts the following arguments:
    ) {
      socket.on('message:send', async (data) => {
        // validate → sanitize → persist → broadcast
-     })
+     });
    }
    ```
 
@@ -203,9 +205,9 @@ This command accepts the following arguments:
    ```typescript
    // Extract all business logic into hooks
    export function useMessages() {
-     const [messages, setMessages] = useState<MessagePayload[]>([])
+     const [messages, setMessages] = useState<MessagePayload[]>([]);
      // ... state management, API calls, real-time appending
-     return { messages, loading, hasMore, loadMore, addMessage }
+     return { messages, loading, hasMore, loadMore, addMessage };
    }
    ```
 
@@ -214,9 +216,12 @@ This command accepts the following arguments:
    ```typescript
    // Callbacks passed to useSocket must be wrapped in useCallback
    // to prevent reconnection loops from effect dependency changes
-   const onMessage = useCallback((msg: MessagePayload) => {
-     addMessage(msg)
-   }, [addMessage])
+   const onMessage = useCallback(
+     (msg: MessagePayload) => {
+       addMessage(msg);
+     },
+     [addMessage],
+   );
    ```
 
 4. **Use shadcn/ui Components**
@@ -242,21 +247,23 @@ This command accepts the following arguments:
 3. **Test Pattern (Vitest)**
 
    ```typescript
-   import { describe, it, expect } from 'vitest'
+   import { describe, it, expect } from 'vitest';
 
    describe('sanitizeMessage', () => {
      it('strips HTML tags', () => {
-       expect(sanitizeMessage('<b>hello</b>')).toBe('hello')
-     })
+       expect(sanitizeMessage('<b>hello</b>')).toBe('hello');
+     });
 
      it('handles empty input', () => {
-       expect(sanitizeMessage('')).toBe('')
-     })
+       expect(sanitizeMessage('')).toBe('');
+     });
 
      it('preserves plain text', () => {
-       expect(sanitizeMessage('where is mankrik wife')).toBe('where is mankrik wife')
-     })
-   })
+       expect(sanitizeMessage('where is mankrik wife')).toBe(
+         'where is mankrik wife',
+       );
+     });
+   });
    ```
 
 ### Phase 3: Testing & Validation
@@ -264,28 +271,33 @@ This command accepts the following arguments:
 After each refactoring increment:
 
 1. **Build shared types** (required first):
+
    ```bash
    cd shared && npx tsc
    ```
 
 2. **Type checking**:
+
    ```bash
    cd server && npx tsc --noEmit
    cd client && npx tsc --noEmit
    ```
 
 3. **Linting**:
+
    ```bash
    cd server && npx eslint .
    cd client && npx eslint .
    ```
 
 4. **Tests**:
+
    ```bash
    cd server && npx vitest run
    ```
 
 5. **Build verification**:
+
    ```bash
    cd client && npx vite build
    ```

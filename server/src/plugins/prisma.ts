@@ -5,7 +5,7 @@ import { PrismaPg } from '@prisma/adapter-pg'
 import type { FastifyInstance } from 'fastify'
 
 export default fp(async function prismaPlugin(fastify: FastifyInstance) {
-  const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL })
+  const pool = new pg.Pool({ connectionString: fastify.env.DATABASE_URL })
   const adapter = new PrismaPg(pool)
   const prisma = new PrismaClient({ adapter })
 

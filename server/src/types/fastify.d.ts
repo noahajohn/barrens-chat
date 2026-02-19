@@ -6,11 +6,14 @@ import type {
   InterServerEvents,
   SocketData,
 } from 'shared'
+import type { Env } from '../config/env.js'
 
 declare module 'fastify' {
   interface FastifyInstance {
+    env: Env
     prisma: PrismaClient
     io: SocketIOServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
+    authenticate: (request: FastifyRequest, reply: FastifyReply) => Promise<void>
   }
 
   interface FastifyRequest {

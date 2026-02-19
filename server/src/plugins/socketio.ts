@@ -16,7 +16,7 @@ export default fp(async function socketioPlugin(fastify: FastifyInstance) {
     SocketData
   >(fastify.server, {
     cors: {
-      origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+      origin: fastify.env.FRONTEND_URL,
       credentials: true,
     },
   })

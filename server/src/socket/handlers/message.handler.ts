@@ -1,4 +1,5 @@
 import type { Server as SocketIOServer, Socket } from 'socket.io'
+import type { FastifyBaseLogger } from 'fastify'
 import type {
   ServerToClientEvents,
   ClientToServerEvents,
@@ -6,7 +7,7 @@ import type {
   SocketData,
 } from 'shared'
 import type { PrismaClient } from '../../generated/prisma/client.js'
-import { validateMessage, createMessage } from '../../services/chat.js'
+import { validateMessage, createMessage, isValidMessageType } from '../../services/chat.js'
 
 type TypedServer = SocketIOServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
 type TypedSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
@@ -19,6 +20,7 @@ export function registerMessageHandlers(
   io: TypedServer,
   socket: TypedSocket,
   prisma: PrismaClient,
+  log: FastifyBaseLogger,
 ) {
   const timestamps: number[] = []
 
@@ -36,7 +38,13 @@ export function registerMessageHandlers(
 
     const { content, messageType } = data
 
-    // Validate
+    // Validate message type
+    if (!isValidMessageType(messageType)) {
+      socket.emit('error', { code: 'VALIDATION_ERROR', message: 'Invalid message type' })
+      return
+    }
+
+    // Validate content
     const error = validateMessage(content)
     if (error) {
       socket.emit('error', { code: 'VALIDATION_ERROR', message: error })
@@ -52,7 +60,7 @@ export function registerMessageHandlers(
 
       io.to('general').emit('message:new', messagePayload)
     } catch (err) {
-      console.error('Failed to persist message:', err)
+      log.error(err, 'Failed to persist message')
       socket.emit('error', { code: 'INTERNAL_ERROR', message: 'Failed to send message' })
     }
   })

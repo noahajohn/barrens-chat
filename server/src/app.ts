@@ -3,13 +3,17 @@ import { fileURLToPath } from 'node:url'
 import Fastify from 'fastify'
 import autoLoad from '@fastify/autoload'
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
+import type { Env } from './config/env.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-export async function buildApp() {
+export async function buildApp(env: Env) {
   const fastify = Fastify({
     logger: true,
   }).withTypeProvider<TypeBoxTypeProvider>()
+
+  // Decorate env before autoloading plugins so all plugins/routes can access it
+  fastify.decorate('env', env)
 
   // Health check — registered directly, not autoloaded
   fastify.get('/health', async () => {
@@ -29,7 +33,7 @@ export async function buildApp() {
   })
 
   // Serve static client build in production
-  if (process.env.NODE_ENV === 'production') {
+  if (env.NODE_ENV === 'production') {
     const staticPlugin = await import('@fastify/static')
     await fastify.register(staticPlugin.default, {
       root: path.join(__dirname, '..', '..', 'client', 'dist'),
