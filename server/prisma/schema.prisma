@@ -40,7 +40,7 @@ model Message {
 
 model NpcPersona {
   id           String  @id @default(uuid()) @db.Uuid
-  name         String
+  name         String  @unique
   archetype    String
   systemPrompt String
   isActive     Boolean @default(true)

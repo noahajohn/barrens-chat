@@ -6,7 +6,7 @@ import type {
   InterServerEvents,
   SocketData,
 } from 'shared'
-import { addUser, removeUser, getOnlineUsers, getOnlineCount } from '../../services/presence.js'
+import { addUser, removeUser, getOnlineUsers, getAllOnlineCount } from '../../services/presence.js'
 
 type TypedServer = SocketIOServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
 type TypedSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
@@ -31,7 +31,7 @@ export const registerPresenceHandlers = async (
 
   // Send current users list to the newly connected user
   const users = getOnlineUsers()
-  socket.emit('users:list', { users, count: getOnlineCount() })
+  socket.emit('users:list', { users, count: getAllOnlineCount() })
 
   // Handle disconnect
   socket.on('disconnect', () => {

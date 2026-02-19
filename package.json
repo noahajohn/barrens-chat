@@ -14,7 +14,8 @@
     "typecheck": "npm run typecheck -w shared && npm run typecheck -w server && npm run typecheck -w client"
   },
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "shadcn": "^3.8.5"
   },
   "dependencies": {
     "lightningcss": "^1.31.1"

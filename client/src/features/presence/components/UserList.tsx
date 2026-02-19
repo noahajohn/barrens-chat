@@ -37,7 +37,10 @@ export const UserList = ({ users, count, targetUser, onTargetUser }: UserListPro
                   {user.username[0].toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <span className="truncate text-sm text-shadow-wow text-wow-gold">{user.username}</span>
+              <span className={cn(
+                'truncate text-sm text-shadow-wow',
+                user.isNpc ? 'text-wow-npc' : 'text-wow-gold',
+              )}>{user.username}</span>
             </Button>
           )
         })}

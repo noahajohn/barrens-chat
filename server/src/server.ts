@@ -11,10 +11,21 @@ const start = async () => {
     await fastify.ready()
 
     // Set up Socket.IO handlers after app is ready
-    setupSocketHandlers(fastify)
+    const cleanup = setupSocketHandlers(fastify)
 
     await fastify.listen({ port: parseInt(env.PORT, 10), host: '0.0.0.0' })
     fastify.log.info(`Server listening on port ${env.PORT}`)
+
+    let shuttingDown = false
+    const shutdown = async () => {
+      if (shuttingDown) return
+      shuttingDown = true
+      cleanup()
+      await fastify.close()
+      process.exit(0)
+    }
+    process.on('SIGTERM', shutdown)
+    process.on('SIGINT', shutdown)
   } catch (err) {
     console.error('Failed to start server:', err)
     process.exit(1)
