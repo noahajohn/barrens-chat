@@ -10,6 +10,7 @@ import { ConnectionStatus } from '@/features/chat/components/ConnectionStatus'
 import { UserList } from '@/features/presence/components/UserList'
 import { ThemeToggle } from '@/features/theme/components/ThemeToggle'
 import { Button } from '@/shared/components/ui/button'
+import { cn } from '@/lib/utils'
 import type { MessagePayload, UserPayload } from 'shared'
 
 export const ChatPage = () => {
@@ -76,22 +77,38 @@ export const ChatPage = () => {
 
       <ConnectionStatus connected={connected} error={error} />
 
-      {/* Main content */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Chat area */}
-        <div className="flex flex-1 flex-col bg-black/40">
-          <ChatLog
-            messages={messages}
-            loading={loading}
-            loadingMore={loadingMore}
-            hasMore={hasMore}
-            onLoadMore={loadMore}
-          />
-          <ChatInput onSend={sendMessage} disabled={!connected} targetUser={targetUser} onClearTarget={handleClearTarget} />
-        </div>
+      {/* Main content — centered WoW-style chat panel */}
+      <div className="flex flex-1 items-center justify-center overflow-hidden p-6">
+        <div className={cn(
+          'flex h-full w-[70%] min-w-[540px] max-w-[1300px] overflow-hidden rounded-sm',
+          'border-[3px] border-yellow-900/60 dark:border-yellow-600/40',
+          'shadow-[0_0_20px_rgba(0,0,0,0.6),inset_0_0_10px_rgba(0,0,0,0.3)]',
+        )}>
+          {/* Chat area */}
+          <div className="flex flex-1 flex-col bg-black/60">
+            <ChatLog
+              messages={messages}
+              loading={loading}
+              loadingMore={loadingMore}
+              hasMore={hasMore}
+              onLoadMore={loadMore}
+            />
+            <ChatInput
+              onSend={sendMessage}
+              disabled={!connected}
+              targetUser={targetUser}
+              onClearTarget={handleClearTarget}
+            />
+          </div>
 
-        {/* User list sidebar */}
-        <UserList users={users} count={count} targetUser={targetUser} onTargetUser={handleTargetUser} />
+          {/* User list sidebar */}
+          <UserList
+            users={users}
+            count={count}
+            targetUser={targetUser}
+            onTargetUser={handleTargetUser}
+          />
+        </div>
       </div>
     </div>
   )

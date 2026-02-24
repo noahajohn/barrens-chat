@@ -9,11 +9,15 @@ interface MessageLineProps {
 
 const BASE_CLASS = 'py-0.5 font-wow-chat text-[17px] leading-snug text-shadow-wow'
 
+const TIME_FORMAT: Intl.DateTimeFormatOptions = {
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false,
+}
+
 export const MessageLine = ({ message }: MessageLineProps) => {
-  const time = new Date(message.createdAt).toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  })
+  const time = new Date(message.createdAt).toLocaleTimeString([], TIME_FORMAT)
 
   if (message.messageType === MessageType.SYSTEM) {
     return (
