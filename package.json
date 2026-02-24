@@ -20,6 +20,9 @@
   "dependencies": {
     "lightningcss": "^1.31.1"
   },
+  "overrides": {
+    "bn.js": "^5.2.1"
+  },
   "engines": {
     "node": ">=24"
   }
